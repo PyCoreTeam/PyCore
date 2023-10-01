@@ -1,0 +1,5 @@
+PyCore.HackTool.build
+PyCore.HackTool.dist
+PyCore.HackTool.onefile-build
+*.zip
+*.txt
