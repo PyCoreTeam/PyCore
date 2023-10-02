@@ -27,4 +27,8 @@ SYN包(SCAPY加强)
   
 ##### 方法名:synAttack    
 SYN包    
-用法: synatk <主机ip> <本机端口> <目标ip> <目标端口> <线程>  
+用法: synatk <主机ip> <本机端口> <目标ip> <目标端口> <线程>   
+##### 方法名:udpAttack    
+UDP连接（无Close）  
+效果很强，带宽可以打到100mbps+（我500mbps+）   
+用法: udpatk <目标ip> <本机端口> <线程>

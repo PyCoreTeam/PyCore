@@ -4,12 +4,6 @@ import sys
 
 from PyCoreHackToolUtils import *
 def main():
-    name = str(input("USERNAME: "))
-    pwd = str(input("PASSWORD: "))
-    if not (name == name1 or pwd == pwd1):
-        sys.exit("密码错误!")
-    else:
-        pass
     try:
         if not os.path.exists(SELF_CONF_PATH):
             f = open(SELF_CONF_PATH, 'x')
@@ -51,6 +45,9 @@ def main():
             elif cmd[0] == "bsynatk":
 
                 synAttackBetter(cmd[1],cmd[2], int(cmd[3]))
+            elif cmd[0] == "udpatk":
+
+                udpAttack(cmd[1].lower().replace("http://",'').replace("https://",''), int(cmd[2]), int(cmd[3]))
             elif cmd[0] == "set":
                 if cmd[1] == "reset":
                     initConfig(CONFIG)
@@ -64,8 +61,9 @@ def main():
             else:
                 print(f"Error:{e}")
                 pass
+
 name1 = "Yurnu"
 pwd1 = "123456"
-main()
+#main()
 
 

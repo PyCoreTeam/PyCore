@@ -13,4 +13,4 @@ with open("./PyCore.AutoBuild/PyCore.HackTool_s1.py",'a+') as f:
     f.write(f"\npwd1 = '{pwd}'")
     f.write(f"\nmain()")
     f.close()
-os.system("nuitka PyCore.AutoBuild\PyCore.HackTool.py --mingw64 --onefile ")
+os.system("nuitka PyCore.AutoBuild\PyCore.HackTool_s1.py --mingw64 --onefile ")

