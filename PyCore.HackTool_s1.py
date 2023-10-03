@@ -25,6 +25,8 @@ def main():
                 sendPacketAttack(toRequestUrl([cmd[1]]), int(str(cmd[2])), failnum=int(cmd[3]))
             elif cmd[0] == "exit":
                 sys.exit("Exited.")
+            elif cmd[0] == "sshatk":
+                sshAttack(cmd[1], int(cmd[2]), int(cmd[3]))
             elif cmd[0] == "ps":
                 if cmd[1] == "clear":
                     try:

@@ -31,4 +31,8 @@ SYN包
 ##### 方法名:udpAttack    
 UDP连接（无Close）  
 效果很强，带宽可以打到100mbps+（我500mbps+）   
-用法: udpatk <目标ip> <本机端口> <线程>
+用法: udpatk <目标ip> <目标端口> <线程>    
+##### 方法名:sshAttack  
+连接ssh服务器
+效果很强，带宽可以打到100mbps+（我500mbps+）   
+用法: sshatk <目标ip> <目标端口> <线程>

