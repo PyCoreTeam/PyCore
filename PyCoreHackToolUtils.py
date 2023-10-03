@@ -8,6 +8,8 @@ from time import sleep
 from urllib import request
 from urllib.request import Request
 
+import impacket.ImpactPacket
+import warnings
 from scapy.layers.inet import TCP, IP
 from scapy.sendrecv import send, sr1
 
@@ -55,8 +57,7 @@ def isSnull(string: str):
 
 
 def synAttack(urip, sourceport, tgtip, tgtport, thread):
-    import impacket.ImpactPacket
-    import warnings
+
     noPolIp = str(tgtip).replace('https://', '').replace('http://', '')
     tgtip = gethostbyname(noPolIp)
     warnings.filterwarnings("ignore")
