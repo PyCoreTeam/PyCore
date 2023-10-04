@@ -111,3 +111,5 @@ def main():
                 # 打印错误信息
                 print(f"Error:{e}")
                 pass
+
+main()
