@@ -1,5 +1,15 @@
 # PyCore
 A high freely toolbox
+### 安装手册
+``` bash
+pdm install
+```
+
+或者
+``` bash
+pip install -r requirements.txt
+```
+
 ##  HTS命令使用
 ### ATK(攻击组合)
 #### HttpAttack
