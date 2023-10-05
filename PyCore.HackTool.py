@@ -1,8 +1,11 @@
 import _thread
 import os
 import sys
+from loguru import logger
 
 from PyCoreHackToolUtils import *
+
+import logging
 
 # 由StarryCamile(Yurnu)编写的代码由CodeGeeX编写注释
 
@@ -100,16 +103,21 @@ def main():
                 # 如果用户输入的参数不为空
                 if cmd != '\n':
                     # 打印错误信息
-                    colormsg("Error command.", 'yellow')
+                    logger.warning("Error command.", 'yellow')
+
 
         # 如果用户输入的参数不完整
         except (IndexError, ValueError, TypeError) as e:
             # 如果参数不完整，则打印参数不完整信息
             if e == "list index out of range":
-                print("参数不完整。")
+                logger.warning("参数不完整。")
             else:
-                # 打印错误信息
-                print(f"Error:{e}")
-                pass
+                # 打印错误信息，另存为log文件
+                logger.error(e)
+                logging.basicConfig(level=logging.DEBUG, 
+                                    filename='error.log', 
+                                    filemode='a',)
+                logger.error("错误信息已保存至log文件。")
 
+# 我也不知道干嘛的，那就凑个字数罢（
 main()

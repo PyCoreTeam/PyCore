@@ -1,0 +1,21 @@
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "StarryCamile,ltzXiaoYanMo", email = "xiajiaruimail@qq.com"},
+]
+dependencies = [
+    "requests",
+    "scapy",
+    "impacket",
+    "paramiko",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "WTFPL"}
+
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
