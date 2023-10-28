@@ -1,11 +1,11 @@
 import _thread
 import os
 import sys
-from loguru import logger
 
 from PyCoreHackToolUtils import *
 
 import logging
+
 
 # 由StarryCamile(Yurnu)编写的代码由CodeGeeX编写注释
 
@@ -114,10 +114,11 @@ def main():
             else:
                 # 打印错误信息，另存为log文件
                 logger.error(e)
-                logging.basicConfig(level=logging.DEBUG, 
-                                    filename='error.log', 
-                                    filemode='a',)
+                logging.basicConfig(level=logging.DEBUG,
+                                    filename='error.log',
+                                    filemode='a', )
                 logger.error("错误信息已保存至log文件。")
+
 
 # 我也不知道干嘛的，那就凑个字数罢（
 main()
