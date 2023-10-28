@@ -8,9 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -25,6 +23,10 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Pyinstaller 的 打包留下的极霸东西（？）
+dist/
+build/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -121,7 +123,7 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
-# Environments
+# 虚拟环境
 .env
 .venv
 env/
@@ -153,6 +155,10 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# PyCore配置文件
+CONF/
+proxies.txt
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

@@ -1,9 +1,10 @@
 [project]
-name = ""
-version = ""
-description = ""
+name = "PyCore"
+version = "114514.1919810"
+description = "SBFLSQ"
 authors = [
     {name = "StarryCamile,ltzXiaoYanMo", email = "xiajiaruimail@qq.com"},
+    {name = "StarryCamile", email = "1487084645@qq.com"}
 ]
 dependencies = [
     "requests",
