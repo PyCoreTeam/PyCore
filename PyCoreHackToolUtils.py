@@ -3,10 +3,13 @@ import json
 import os.path
 import random
 import socket
+import sys
 from socket import *
 from time import sleep
 from urllib import request
 from urllib.request import Request
+
+from PyQt5.QtWidgets import QApplication
 from paramiko import SSHClient
 import impacket.ImpactPacket
 import warnings
@@ -15,6 +18,8 @@ from loguru import logger
 from paramiko.client import AutoAddPolicy
 from scapy.layers.inet import TCP, IP
 from scapy.sendrecv import send, sr1
+
+from PyQtUIs import HackToolMainUi
 
 SELF_CONF_PATH = "./CONF/HTS.conf"
 plist = []
@@ -272,7 +277,6 @@ def sshAttack(host, port, thread):
 
     for i in range(1, thread + 1):
         _thread.start_new_thread(get, (host, port,))
-
 
 def tcpAttack(host: tuple, thread: int, num: int = 50):
     host1 = host

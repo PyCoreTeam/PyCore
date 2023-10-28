@@ -69,6 +69,14 @@ def main():
             elif cmd[0] == "tcpatk":
                 # 发送TCP攻击
                 tcpAttack((cmd[1], int(cmd[2])), int(cmd[3]))
+            elif cmd[0] == "gui":
+                colormsg("Gui",'red')
+                app = QApplication(sys.argv)
+                ex = HackToolMainUi.Example()
+                app.exec_()
+                ex.setVisible(True)
+
+
             # 如果用户输入的命令是fullatk
             elif cmd[0] == "fullatk":
                 # 发送FULL攻击
