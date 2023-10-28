@@ -1,3 +1,4 @@
+# 建议改名：shit hill 代码是怎么练成的
 import _thread
 import os
 import sys
