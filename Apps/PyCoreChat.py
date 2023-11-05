@@ -6,7 +6,7 @@ def server(port : int, max: int) -> None:
     s.bind(("127.0.0.1", port))
     s.listen(max)
     clients = []
-    
+
 
 
 
