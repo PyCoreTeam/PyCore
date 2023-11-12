@@ -8,3 +8,5 @@ psutil~=5.9.5
 future~=0.18.2
 
 WMI~=1.5.1
+
+loguru~=0.7.2
